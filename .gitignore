@@ -4,3 +4,6 @@
 
 # Output directory
 _outputs/
+
+# Targets outputs
+_targets/
