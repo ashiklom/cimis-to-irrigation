@@ -8,7 +8,7 @@ extract_cimis_daily <- function(date, cimis_root, design_points) {
 
   r <- terra::rast(paste0("/vsigzip/", file_path))
 
-  terra::crs(r) <- "EPSG:3310"  # California Albers
+  terra::crs(r) <- "EPSG:3310" # California Albers
 
   pts_sf <- sf::st_as_sf(design_points, coords = c("lon", "lat"), crs = 4326)
   pts_albers <- sf::st_transform(pts_sf, crs = 3310)

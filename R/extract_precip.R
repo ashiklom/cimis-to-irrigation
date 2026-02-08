@@ -1,5 +1,8 @@
 extract_chirps_yearly <- function(year, chirps_root, design_points) {
-  file_path <- file.path(chirps_root, glue::glue("chirps-v2.0.{year}.days_p05.nc"))
+  file_path <- file.path(
+    chirps_root,
+    glue::glue("chirps-v2.0.{year}.days_p05.nc")
+  )
 
   if (!file.exists(file_path)) {
     stop("File `", file_path, "` does not exist")

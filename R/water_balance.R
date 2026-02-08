@@ -9,9 +9,7 @@
 #' @param w_min_frac Fraction of WHC for minimum water level, default 0.15
 #' @return List with vectors: W_t (water balance), irr (irrigation), runoff
 #' @export
-calc_water_balance <- function(et, precip,
-                               whc = 500,
-                               w_min_frac = 0.15) {
+calc_water_balance <- function(et, precip, whc = 500, w_min_frac = 0.15) {
   n <- length(et)
   if (length(precip) != n) {
     stop("et and precip must have the same length")
@@ -68,18 +66,20 @@ apply_water_balance <- function(df, whc = 500) {
       .by = .data$location_id
     ) |>
     dplyr::group_split(.data$location_id) |>
-    purrr::map_dfr(~{
-      et <- .x$et_mm_day
-      precip <- .x$precip_mm_day
+    purrr::map_dfr(
+      ~ {
+        et <- .x$et_mm_day
+        precip <- .x$precip_mm_day
 
-      wb <- calc_water_balance(et, precip, whc = whc)
+        wb <- calc_water_balance(et, precip, whc = whc)
 
-      .x$W_t <- wb$W_t
-      .x$irr <- wb$irr
-      .x$runoff <- wb$runoff
+        .x$W_t <- wb$W_t
+        .x$irr <- wb$irr
+        .x$runoff <- wb$runoff
 
-      .x
-    })
+        .x
+      }
+    )
 }
 
 .data <- rlang::.data
