@@ -30,10 +30,28 @@ id,lat,lon
     - Still CHIRPS for precip
     - ET -- Replace OpenET with CIMIS
 
-#### CHIRPS data
+#### CIMIS data
+
+Original root URL is https://spatialcimis.water.ca.gov/cimis/.
+Nested subdirectories for year (YYYY), month (MM), and day (DD).
+In the final directory, the reference evapotranspiration (ET) data are in the `ETo.asc.gz` file.
+The general URL pattern for the ET data is: https://spatialcimis.water.ca.gov/cimis/YYYY/MM/DD/ETo.asc.gz (where `YYYY` is the year, `MM` is the month, `DD` is the day).
+A complete URL example: https://spatialcimis.water.ca.gov/cimis/2025/10/05/ETo.asc.gz
+
+The ET units are `mm day-1`.
+The CRS is EPSG:3310 (California Albers).
+
+#### CHIRPS (v2.0) data
 
 Daily data at 0.05 degree resolution.
 One NetCDF file per year.
+
+Original data are here https://data.chc.ucsb.edu/products/CHIRPS-2.0/global_daily/netcdf/p05/.
+All files are linked directly from that page.
+The general filename pattern is `chirps-v2.0.YYYY.days_p05.nc`, where `YYYY` is the year.
+A complete URL example: https://data.chc.ucsb.edu/products/CHIRPS-2.0/global_daily/netcdf/p05/chirps-v2.0.2024.days_p05.nc
+
+A partial NetCDF header for an example file is provided below.
 
 ```
 netcdf chirps-v2.0.2020.days_p05 {
