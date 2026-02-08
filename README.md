@@ -41,6 +41,15 @@ A complete URL example: https://spatialcimis.water.ca.gov/cimis/2025/10/05/ETo.a
 The ET units are `mm day-1`.
 The CRS is EPSG:3310 (California Albers).
 
+The remote data can be accessed directly with GDAL's `/vsicurl` virtual file system driver; e.g.,
+
+```r
+r <- terra::rast("/vsigzip//vsicurl/https://spatialcimis.water.ca.gov/cimis/.../ETo.asc.gz")
+```
+
+However, because the data are compressed, they have to be downloaded in full anyway, so there isn't any advantage to direct remote access.
+Some quick benchmarking suggests ~0.3 seconds for local access vs. ~5.0 seconds for remote access. 
+
 #### CHIRPS (v2.0) data
 
 Daily data at 0.05 degree resolution.
@@ -87,6 +96,14 @@ variables:
                 time:calendar = "gregorian" ;
                 time:axis = "T" ;
 ```
+
+CHIRPS can also be accessed directly remotely with:
+
+```r
+terra::rast("/vsicurl/https://.../chirps-...-p05.nc")
+```
+
+Because NetCDF supports HTTP range gets, the penalty for remote vs.\ local access is much lower --- ~1.3 seconds for local access vs. 4 seconds for remote access.
 
 ## Outputs
 
