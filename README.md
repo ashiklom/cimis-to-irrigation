@@ -77,9 +77,9 @@ variables:
 For every site (indicated by lat/lon coordinate), a water balance CSV file with columns:
 
 - `time` (date)
-- `et` -- evapotranspiration (from OpenET / CIMIS)
-- `precip` -- precipitation (from CHIRPS)
-- `irr` -- irrigation (calculated)
+- `et` -- evapotranspiration (from OpenET / CIMIS) [CIMIS unit is `mm day-1`]
+- `precip` -- precipitation (from CHIRPS) [unit is `mm day-1`]
+- `irr` -- irrigation (calculated) [unit is `cm day-1`]
 - `runoff`-- runoff (calculated)
 - `W_t` -- water balance (calculated)
 - `year` -- year

@@ -1,7 +1,13 @@
 read_design_points <- function(path) {
-  pts <- read.csv(path, stringsAsFactors = FALSE)
-  pts$location_id <- pts$id
-  pts
+  readr::read_csv(
+    path,
+    col_types = readr::cols(
+      id = readr::col_character(),
+      lat = readr::col_double(),
+      lon = readr::col_double()
+    )
+  ) |>
+    dplyr::rename(location_id = .data$id)
 }
 
 discover_cimis_dates <- function(cimis_root) {
@@ -11,27 +17,34 @@ discover_cimis_dates <- function(cimis_root) {
     recursive = TRUE,
     full.names = FALSE
   )
-  
-  dates <- vapply(et_files, function(f) {
+
+  dates <- purrr::map_chr(et_files, function(f) {
     parts <- strsplit(f, "/")[[1]]
     if (length(parts) >= 4) {
-      year <- parts[1]
-      month <- parts[2]
-      day <- parts[3]
-      sprintf("%s-%s-%s", year, month, day)
+      glue::glue("{parts[1]}-{parts[2]}-{parts[3]}")
     } else {
       NA_character_
     }
-  }, character(1))
-  
-  dates <- dates[!is.na(dates)]
-  dates <- as.Date(dates, format = "%Y-%m-%d")
-  dates <- dates[!is.na(dates)]
-  sort(dates)
+  })
+
+  dates |>
+    purrr::keep(~ !is.na(.x)) |>
+    as.Date(format = "%Y-%m-%d") |>
+    purrr::keep(~ !is.na(.x)) |>
+    sort()
 }
 
 discover_chirps_years <- function(chirps_root) {
-  files <- list.files(chirps_root, pattern = "chirps-v2\\.0\\.\\d{4}\\.days_p05\\.nc$", full.names = FALSE)
-  years <- as.integer(gsub("chirps-v2\\.0\\.(\\d{4})\\.days_p05\\.nc$", "\\1", files))
-  sort(years)
+  files <- list.files(
+    chirps_root,
+    pattern = "chirps-v2\\.0\\.\\d{4}\\.days_p05\\.nc$",
+    full.names = FALSE
+  )
+
+  files |>
+    gsub("chirps-v2\\.0\\.(\\d{4})\\.days_p05\\.nc$", "\\1", x = _) |>
+    as.integer() |>
+    sort()
 }
+
+.data <- rlang::.data
