@@ -7,3 +7,5 @@ _outputs/
 
 # Targets outputs
 _targets/
+
+.Renviron
