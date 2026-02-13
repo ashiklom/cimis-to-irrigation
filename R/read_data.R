@@ -7,7 +7,7 @@ read_design_points <- function(path) {
       lon = readr::col_double()
     )
   ) |>
-    dplyr::rename(location_id = .data$id)
+    dplyr::rename(location_id = "id")
 }
 
 discover_cimis_dates <- function(cimis_root) {

@@ -50,6 +50,29 @@ r <- terra::rast("/vsigzip//vsicurl/https://spatialcimis.water.ca.gov/cimis/.../
 However, because the data are compressed, they have to be downloaded in full anyway, so there isn't any advantage to direct remote access.
 Some quick benchmarking suggests ~0.3 seconds for local access vs. ~5.0 seconds for remote access. 
 
+#### OpenET
+
+An alternative source of ET data is OpenET.
+This has global availability.
+
+OpenET can be accessed via API at this endpoint: https://openet-api.org/raster/timeseries/point.
+An API key is required (header `Authorization: <API KEY>`).
+Expect the API key to be provided via the environment variable `OPENET_API_KEY`.
+
+The API request expects the following parameters:
+
+- These vary depending on user needs:
+    - `date_range`: `[START_DATE, END_DATE]` (dates)
+    - `geometry`: `[LONGITUDE, LATITUDE]` (coordinates; in EPSG:4326)
+
+- These are held constant:
+    - `interval`: "daily"
+    - `model`: "Ensemble"
+    - `variable`: "ET"
+    - `reference_et`: "gridMET"
+    - `units`: "mm"
+    - `file_format`: "JSON"
+
 #### CHIRPS (v2.0) data
 
 Daily data at 0.05 degree resolution.
